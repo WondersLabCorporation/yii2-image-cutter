@@ -1,6 +1,6 @@
 <?php
 
-namespace sadovojav\cutter\behaviors;
+namespace WondersLabCorporation\cutter;
 
 use Yii;
 use yii\helpers\Json;

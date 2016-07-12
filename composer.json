@@ -1,7 +1,6 @@
 {
-  "name": "sadovojav/yii2-image-cutter",
+  "name": "WondersLabCorporation/yii2-image-cutter",
   "description": "Yii2 crop image widget",
-  "version": "1.0.0.0",
   "type": "yii2-extension",
   "keywords": [
     "yii2",
@@ -12,9 +11,8 @@
   ],
   "authors": [
     {
-      "name": "Aleksandr Sadovoj",
-      "email": "sadovojav@gmail.com",
-      "homepage": "https://github.com/sadovojav"
+      "name": "Dmitriy Raschepkin",
+      "email": "dmitriy.raschepkin@gmail.com",
     }
   ],
   "require": {
@@ -24,10 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "sadovojav\\cutter\\": ""
+      "WondersLabCorporation\\cutter\\": "src"
     }
-  },
-  "extra": {
-    "bootstrap": "sadovojav\\cutter\\Bootstrap"
   }
 }

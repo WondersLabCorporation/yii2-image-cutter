@@ -1,6 +1,6 @@
 <?php
 
-namespace sadovojav\cutter;
+namespace WondersLabCorporation\cutter;
 
 use Yii;
 use yii\helpers\Html;

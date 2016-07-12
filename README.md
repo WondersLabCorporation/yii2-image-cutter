@@ -1,6 +1,6 @@
 # Yii2 image cutter
 
-This is a fork [Patroklo/yii2-widget-upload-crop](https://github.com/Patroklo/yii2-widget-upload-crop)
+This is a fork [sadovojav/yii2-image-cutter](https://github.com/sadovojav/yii2-image-cutter)
 
 #### Features:
 - Upload image
@@ -10,20 +10,34 @@ This is a fork [Patroklo/yii2-widget-upload-crop](https://github.com/Patroklo/yi
 
 ![cutter](https://cloud.githubusercontent.com/assets/9282021/8411519/fd601b0e-1e8c-11e5-83a5-1f8c4195f562.jpg)
 
-### Composer
+Installation
+------------
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
-The preferred way to install this extension is through [Composer](http://getcomposer.org/).
+Add to your `composer.json` file
 
-Either run ```php composer.phar require sadovojav/yii2-image-cutter "dev-master"```
+```json
+"repositories": [
+    {
+        "url": "https://github.com/WondersLabCorporation/yii2-image-cutter.git",
+        "type": "git"
+    }
+]
+```
+and run
 
-or add ```"sadovojav/yii2-image-cutter": "dev-master"``` to the require section of your ```composer.json```
+```
+composer require WondersLabCorporation/yii2-image-cutter:"dev-master"
+```
 
-### Use
+
+Usage
+------------
 
 * Add to the model behavior
 
 ```php
-    use sadovojav\cutter\behaviors\CutterBehavior;
+    use WondersLabCorporation\cutter\behaviors\CutterBehavior;
 
     public function behaviors()
     {
@@ -58,7 +72,7 @@ or add ```"sadovojav/yii2-image-cutter": "dev-master"``` to the require section 
 ```php
     <div class="form-group">
         <label class="control-label">Image</label>
-        <?= \sadovojav\cutter\Cutter::widget([
+        <?= \WondersLabCorporation\cutter\Cutter::widget([
             'model' => $model,
             'attribute' => 'image'
         ]); ?>
@@ -70,7 +84,7 @@ or
 > With client validation
 
 ```php
-    <?= $form->field($model, 'image')->widget(\sadovojav\cutter\Cutter::className(), [
+    <?= $form->field($model, 'image')->widget(\WondersLabCorporation\cutter\Cutter::className(), [
         //options
     ]); ?>
 ```
