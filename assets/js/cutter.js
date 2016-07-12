@@ -125,17 +125,17 @@ $.fn.cutter = function (options) {
     });
 
     $modal.on('hidden.bs.modal', function () {
-        if (!$cropped) {
-            $preview.prop('src', $('#' + $imageID).prop('src'));
-            $preview.attr('src', '');
-            $('#' + $inputField).replaceWith($('#' + $inputField).val('').clone(true));
-        }
-
-        $cropped = false;
-
-        $imageContainer.find(".cropper-container").remove();
-
-        $('#' + $imageID).removeAttr("src").removeAttr("style").removeClass("cropper-hidden");
+        // if (!$cropped) {
+        //     $preview.prop('src', $('#' + $imageID).prop('src'));
+        //     $preview.attr('src', '');
+        //     $('#' + $inputField).replaceWith($('#' + $inputField).val('').clone(true));
+        // }
+        //
+        // $cropped = false;
+        //
+        // $imageContainer.find(".cropper-container").remove();
+        //
+        // $('#' + $imageID).removeAttr("src").removeAttr("style").removeClass("cropper-hidden");
     });
 
     function fileOnload(e) {
