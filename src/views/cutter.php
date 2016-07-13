@@ -6,6 +6,7 @@
 /* @var $imageOptions array */
 /* @var $pluginOptions array */
 /* @var $useWindowHeight boolean */
+/* @var $showRemoveButton boolean */
 
 use yii\bootstrap\ButtonGroup;
 use yii\helpers\Html;
@@ -40,9 +41,11 @@ $this->registerJs('jQuery("#' . $inputField . '").cutter(' . Json::encode([
             ]); ?>
         </span>
     </label>
+    <?php if ($showRemoveButton) : ?>
     <?= Html::checkbox($attribute . '-remove', false, [
         'label' => Yii::t('WondersLabCorporation/cutter', 'Remove')
     ]); ?>
+    <?php endif; ?>
 
     <?php Modal::begin([
         'header' => Html::tag('h4', Yii::t('WondersLabCorporation/cutter', 'Cutter'), ['class' => 'modal-title']),
