@@ -75,7 +75,8 @@ Usage
         <label class="control-label">Image</label>
         <?= \WondersLabCorporation\cutter\Cutter::widget([
             'model' => $model,
-            'attribute' => 'image'
+            'attribute' => 'image',
+            'showRemoveButton' => false
         ]); ?>
     </div>
 ```
