@@ -9,16 +9,15 @@ namespace WondersLabCorporation\cutter;
 class AssetBundle extends \yii\web\AssetBundle
 {
     public $js = [
-        'js/cropper.js',
         'js/cutter.js',
     ];
     public $css = [
-        'css/cropper.css',
         'css/cutter.css',
     ];
     
     public $depends = [
-        'yii\web\JqueryAsset'
+        'yii\web\JqueryAsset',
+        'WondersLabCorporation\cutter\CropperAsset',
     ];
 
     public function init()
