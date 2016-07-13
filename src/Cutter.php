@@ -29,7 +29,7 @@ class Cutter extends \yii\widgets\InputWidget
      * Cropper options
      * @var array
      */
-    public $cropperOptions = [];
+    public $pluginOptions = [];
 
     /**
      * Default cropper options
@@ -51,7 +51,7 @@ class Cutter extends \yii\widgets\InputWidget
 
         AssetBundle::register($this->view);
 
-        $this->cropperOptions = array_merge($this->cropperOptions, $this->defaultCropperOptions);
+        $this->pluginOptions = array_merge($this->pluginOptions, $this->defaultCropperOptions);
     }
 
     public function run()
@@ -59,7 +59,7 @@ class Cutter extends \yii\widgets\InputWidget
         return $this->render('cutter', [
             'imageOptions' => $this->imageOptions,
             'useWindowHeight' => $this->useWindowHeight,
-            'cropperOptions' => $this->cropperOptions,
+            'pluginOptions' => $this->pluginOptions,
             'options' => $this->options,
             'model' => $this->model,
             'attribute' => $this->attribute,

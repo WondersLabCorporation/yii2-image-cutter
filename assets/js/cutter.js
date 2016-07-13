@@ -6,6 +6,7 @@ $.fn.cutter = function (options) {
     var $uploadField = $(this);
 
     var $inputField = options['inputField'];
+    var $attribute = options['attribute'];
     var $cropperOptions = options['cropperOptions'];
     var $useWindowHeight = options['useWindowHeight'];
 
@@ -14,78 +15,9 @@ $.fn.cutter = function (options) {
     var $imageContainer = $cutter.find('.image-container');
     var $imageID = $imageContainer.find('img').attr('id');
     var $preview = $cutter.find('.preview-image');
+    var $cropperData = $cutter.find('[name=' + $attribute + '-cropping-data]');
 
-    var $dataX = $('#' + $inputField + '-dataX'),
-        $dataY = $('#' + $inputField + '-dataY'),
-        $dataHeight = $('#' + $inputField + '-dataHeight'),
-        $dataWidth = $('#' + $inputField + '-dataWidth'),
-        $dataRotate = $('#' + $inputField + '-dataRotate');
-
-    var $defaultCropperOptions = {
-        crop: function (data) {
-            $dataX.val(Math.round(data.x));
-            $dataY.val(Math.round(data.y));
-            $dataHeight.val(Math.round(data.height));
-            $dataWidth.val(Math.round(data.width));
-            $dataRotate.val(Math.round(data.rotate));
-        }
-    };
-
-    $cutter.on('click', '[data-method]', function () {
-        var data = $(this).data(),
-            $target,
-            result;
-
-        var $modal = $(this).closest('.modal');
-        var $imageContainer = $modal.find('.image-container');
-        var $imageID = $imageContainer.find('img').attr('id');
-
-        if (data.method) {
-            data = $.extend({}, data);
-
-            if (typeof data.target !== 'undefined') {
-                $target = $(data.target);
-
-                if (typeof data.option === 'undefined') {
-                    if (data.method == 'setAspectRatio') {
-                        var targetVal = $target.val().replace("/\D\/+/g", "");
-                        var split = targetVal.split('/');
-
-                        if (split.length == 2) {
-                            data.option = split[0] / split[1];
-                        } else {
-                            data.option = parseFloat($target.val());
-                        }
-                    }
-                }
-            }
-
-            if (data.method == 'setData') {
-                data.option = {
-                    "x": parseFloat($dataX.val()),
-                    "y": parseFloat($dataY.val()),
-                    "width": parseFloat($dataWidth.val()),
-                    "height": parseFloat($dataHeight.val()),
-                    "rotate": parseFloat($dataRotate.val())
-                };
-            }
-
-            result = $('#' + $imageID).cropper(data.method, data.option);
-
-            console.log($imageID);
-
-            if ($.isPlainObject(result) && $target) {
-                try {
-                    $target.val(JSON.stringify(result));
-                } catch (e) {
-                    console.log(e.message);
-                }
-            }
-
-        }
-
-        return false;
-    });
+    var $initialImageSrc = $preview.prop('src');
 
     $uploadField.change(function (e) {
         var file = e.target.files[0],
@@ -125,17 +57,16 @@ $.fn.cutter = function (options) {
     });
 
     $modal.on('hidden.bs.modal', function () {
-        // if (!$cropped) {
-        //     $preview.prop('src', $('#' + $imageID).prop('src'));
-        //     $preview.attr('src', '');
-        //     $('#' + $inputField).replaceWith($('#' + $inputField).val('').clone(true));
-        // }
-        //
-        // $cropped = false;
-        //
-        // $imageContainer.find(".cropper-container").remove();
-        //
-        // $('#' + $imageID).removeAttr("src").removeAttr("style").removeClass("cropper-hidden");
+        if (!$cropped) {
+            // On cancelling or failed cropping need to reset fileInput and preview value.
+            $preview.prop('src', $initialImageSrc);
+            // Due to browser restrictions fileInput value can be set to empty string only
+            $('#' + $inputField).replaceWith($('#' + $inputField).val('').clone(true));
+        }
+
+        $cropped = false;
+
+        $('#' + $imageID).removeAttr("src").removeAttr("style");
     });
 
     function fileOnload(e) {
@@ -153,7 +84,17 @@ $.fn.cutter = function (options) {
                 height: size.height + 'px'
             });
 
-            var options = $.extend({}, $cropperOptions, $defaultCropperOptions);
+            var options = $.extend({}, $cropperOptions, {
+                'crop': function (data) {
+                    $cropperData.val(JSON.stringify({
+                        'dataRotate': Math.round(data.rotate),
+                        'dataX': Math.round(data.x),
+                        'dataY': Math.round(data.y),
+                        'dataWidth': Math.round(data.width),
+                        'dataHeight': Math.round(data.height),
+                    }));
+                }
+            });
 
             $('#' + $imageID).cropper(options);
         });
@@ -162,7 +103,7 @@ $.fn.cutter = function (options) {
     }
 
     function getImageContainerSize() {
-        var height, aspectRatio = 1;
+        var height;
         var width = $imageContainer.width();
         var minHeight = 100;
 
@@ -170,21 +111,17 @@ $.fn.cutter = function (options) {
         var imageHeight = $('#' + $imageID).height();
 
         if (imageWidth > imageHeight) {
-            aspectRatio = imageWidth / width;
+            var aspectRatio = imageWidth / width;
             height = imageHeight / aspectRatio;
-        }
-
-        if (imageWidth < imageHeight) {
+        } else if (imageWidth < imageHeight) {
             if (imageWidth < width) {
                 width = imageWidth;
                 height = imageHeight;
             } else {
-                aspectRatio = imageWidth / width;
+                var aspectRatio = imageWidth / width;
                 height = imageHeight / aspectRatio;
             }
-        }
-
-        if (imageWidth == imageHeight) {
+        } else if (imageWidth == imageHeight) {
             if (imageWidth < width) {
                 height = imageHeight;
             } else {

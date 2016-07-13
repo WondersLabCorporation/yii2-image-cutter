@@ -67,9 +67,10 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
                 $this->delete($attribute);
             }
 
-            $cropping = $_POST[$attribute . '-cropping'];
+            $jsonCroppingData = Yii::$app->request->post($attribute . '-cropping-data');
+            $cropping = Json::decode($jsonCroppingData);
 
-            $croppingFileName = md5($uploadImage->name . $this->quality . Json::encode($cropping));
+            $croppingFileName = md5($uploadImage->name . $this->quality . $jsonCroppingData);
             $croppingFileExt = strrchr($uploadImage->name, '.');
             $croppingFileDir = substr($croppingFileName, 0, 2);
 
