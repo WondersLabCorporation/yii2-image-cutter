@@ -47,6 +47,7 @@ class Cutter extends \yii\widgets\InputWidget
         'movable' => true,
         'viewMode' => 1,
         'dragMode' => 'move',
+        'aspectRatio' => 1,
     ];
 
     private $view;
