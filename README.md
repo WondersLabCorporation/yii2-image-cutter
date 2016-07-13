@@ -1,14 +1,15 @@
 # Yii2 image cutter
 
-This is a fork [sadovojav/yii2-image-cutter](https://github.com/sadovojav/yii2-image-cutter)
+This is Yii2 wrapper for [Cropper bower package](https://github.com/fengyuanchen/cropper)
+Includes CutterBehavior that should be used with the widget to save cropped image into model
+
+Widget is available for usage with the model only for now.
 
 #### Features:
 - Upload image
-- Crop image
+- Crop image using Cropper
 - Use Imagine
 - Cache sorting to subdirectories
-
-![cutter](https://cloud.githubusercontent.com/assets/9282021/8411519/fd601b0e-1e8c-11e5-83a5-1f8c4195f562.jpg)
 
 Installation
 ------------
@@ -98,10 +99,10 @@ or
 > Defines the model attribute that will be used to make de form input field.
 
 * useWindowHeight (bool) (optional)
-> Use the height of the current window for the form image cropping
+> Use the height of the current window for the image cropping modal
 
 * imageOptions (array) (optional)
 > List with options that will be added to the image field that will be used to define the crop data in the modal. The format should be ['option' => 'value'].
 
-* cropperOptions (array) (optional)
+* pluginOptions (array) (optional)
 > List with options that will be added in javaScript while creating the crop object. For more information about which options can be added you can [read this web](https://github.com/fengyuanchen/cropper#options).
