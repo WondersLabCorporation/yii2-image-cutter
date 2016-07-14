@@ -7,6 +7,7 @@
 /* @var $pluginOptions array */
 /* @var $useWindowHeight boolean */
 /* @var $showRemoveButton boolean */
+/* @var $cropperButtons string */
 
 use yii\bootstrap\ButtonGroup;
 use yii\helpers\Html;
@@ -52,6 +53,7 @@ $this->registerJs('jQuery("#' . $inputField . '").cutter(' . Json::encode([
         'closeButton' => false,
         'size' => Modal::SIZE_LARGE,
         'footer' => <<<FOOTER
+{$cropperButtons}
 <a class="btn btn-danger" id="{$imageOptions['id']}_button_cancel">Cancel</a>
 <a class="btn btn-success" id="{$imageOptions['id']}_button_accept">Accept</a>
 FOOTER

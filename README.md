@@ -76,7 +76,20 @@ Usage
         <?= \WondersLabCorporation\cutter\Cutter::widget([
             'model' => $model,
             'attribute' => 'image',
-            'showRemoveButton' => false
+            'showRemoveButton' => false,
+            'cropperButtonsTemplate' => '{mirror} {refresh}',
+            'cropperButtons' => [
+                'mirror' => Html::a(
+                    '<i class="glyphicon glyphicon-mirror"></i>',
+                    '#',
+                    [
+                        'type' => 'button',
+                        'data-method' => 'scaleX',
+                        'data-option' => -1,
+                        'class' => 'btn btn-primary',
+                    ]
+                )
+            ],
         ]); ?>
     </div>
 ```

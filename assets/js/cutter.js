@@ -142,4 +142,20 @@ $.fn.cutter = function (options) {
             'height': height
         }
     }
+
+    $cutter.on('click', '[data-method]', function () {
+        var method = $(this).data('method');
+        var option = $(this).data('option');
+
+        var $modal = $(this).closest('.modal');
+        var $imageContainer = $modal.find('.image-container');
+        var $imageID = $imageContainer.find('img').attr('id');
+
+        if (method) {
+            $('#' + $imageID).cropper(method, option);
+
+        }
+
+        return false;
+    });
 };
