@@ -54,14 +54,14 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
     {
         if (is_array($this->attributes) && count($this->attributes)) {
             foreach ($this->attributes as $attribute) {
-                $this->uploadTemporaryFile($attribute);
+                $this->createInstance($attribute);
             }
         } else {
-            $this->uploadTemporaryFile($this->attributes);
+            $this->createInstance($this->attributes);
         }
     }
 
-    public function uploadTemporaryFile($attribute)
+    public function createInstance($attribute)
     {
         $this->owner->{$attribute} = UploadedFile::getInstance($this->owner, $attribute);
     }
