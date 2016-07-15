@@ -43,10 +43,27 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
     public function events()
     {
         return [
+            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
             ActiveRecord::EVENT_BEFORE_INSERT => 'beforeUpload',
             ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpload',
             ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if (is_array($this->attributes) && count($this->attributes)) {
+            foreach ($this->attributes as $attribute) {
+                $this->uploadTemporaryFile($attribute);
+            }
+        } else {
+            $this->uploadTemporaryFile($this->attributes);
+        }
+    }
+
+    public function uploadTemporaryFile($attribute)
+    {
+        $this->owner->{$attribute} = UploadedFile::getInstance($this->owner, $attribute);
     }
 
     public function beforeUpload()
@@ -62,7 +79,7 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
 
     public function upload($attribute)
     {
-        if ($uploadImage = UploadedFile::getInstance($this->owner, $attribute)) {
+        if ($uploadImage = $this->owner->{$attribute}) {
             if (!$this->owner->isNewRecord) {
                 $this->delete($attribute);
             }
