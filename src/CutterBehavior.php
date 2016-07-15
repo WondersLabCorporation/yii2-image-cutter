@@ -79,7 +79,7 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
 
     public function upload($attribute)
     {
-        if ($uploadImage = $this->owner->{$attribute}) {
+        if ($uploadImage = $this->createInstance($attribute)) {
             if (!$this->owner->isNewRecord) {
                 $this->delete($attribute);
             }
