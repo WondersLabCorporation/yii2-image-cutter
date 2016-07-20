@@ -31,7 +31,6 @@
 }
 
 .image-cutter .dropzone .img-container {
-    position: relative;
     text-align: center;
     overflow: hidden;
     padding: 1px;
