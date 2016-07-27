@@ -25,7 +25,6 @@ $imageOptions['id'] = Yii::$app->getSecurity()->generateRandomString(10);
 $inputField = Html::getInputId($model, $attribute);
 
 $this->registerJs('jQuery("#' . $inputField . '").cutter(' . Json::encode([
-        'attribute' => $attribute,
         'inputField' => $inputField,
         'useWindowHeight' => $useWindowHeight,
         'cropperOptions' => $pluginOptions
@@ -33,7 +32,7 @@ $this->registerJs('jQuery("#' . $inputField . '").cutter(' . Json::encode([
 ?>
 <div class="image-cutter" id="<?= $inputField . '-cutter'; ?>">
     <?= Html::activeFileInput($model, $attribute); ?>
-    <?= Html::hiddenInput($attribute . '-cropping-data', '{}'); ?>
+    <?= Html::hiddenInput($model->formName() . '['. $attribute . '-cropping-data]', '{}', ['id' => $imageOptions['id'] . '-cropping-data']); ?>
     <label class="dropzone" for="<?= $inputField ?>">
         <span class="img-container">
             <span><?= Yii::t('WondersLabCorporation/cutter', 'Click to upload image'); ?></span>
@@ -43,9 +42,9 @@ $this->registerJs('jQuery("#' . $inputField . '").cutter(' . Json::encode([
         </span>
     </label>
     <?php if ($showRemoveButton) : ?>
-    <?= Html::checkbox($attribute . '-remove', false, [
-        'label' => Yii::t('WondersLabCorporation/cutter', 'Remove')
-    ]); ?>
+        <?= Html::checkbox($attribute . '-remove', false, [
+            'label' => Yii::t('WondersLabCorporation/cutter', 'Remove')
+        ]); ?>
     <?php endif; ?>
 
     <?php Modal::begin([

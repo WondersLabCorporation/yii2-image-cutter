@@ -83,8 +83,15 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
             if (!$this->owner->isNewRecord) {
                 $this->delete($attribute);
             }
-
-            $jsonCroppingData = Yii::$app->request->post($attribute . '-cropping-data');
+            $defaults = [
+                'dataRotate' => null,
+                'dataX' => null,
+                'dataY' => null,
+                'dataWidth' => null,
+                'dataHeight' => null,
+            ];
+            $ownerPost = Yii::$app->request->post($this->owner->formName());
+            $jsonCroppingData = isset($ownerPost[$attribute . '-cropping-data']) ? $ownerPost[$attribute . '-cropping-data'] : $defaults;
             $cropping = Json::decode($jsonCroppingData);
 
             $croppingFileName = md5($uploadImage->name . $this->quality . $jsonCroppingData);

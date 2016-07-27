@@ -6,7 +6,6 @@ $.fn.cutter = function (options) {
     var $uploadField = $(this);
 
     var $inputField = options['inputField'];
-    var $attribute = options['attribute'];
     var $cropperOptions = options['cropperOptions'];
     var $useWindowHeight = options['useWindowHeight'];
 
@@ -15,7 +14,7 @@ $.fn.cutter = function (options) {
     var $imageContainer = $cutter.find('.image-container');
     var $imageID = $imageContainer.find('img').attr('id');
     var $preview = $cutter.find('.preview-image');
-    var $cropperData = $cutter.find('[name=' + $attribute + '-cropping-data]');
+    var $cropperData = $cutter.find('#' + $imageID + '-cropping-data');
 
     var $initialImageSrc = $preview.prop('src');
 
