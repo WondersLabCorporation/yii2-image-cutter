@@ -43,6 +43,7 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
     public function events()
     {
         return [
+            ActiveRecord::EVENT_AFTER_VALIDATE => 'afterValidate',
             ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
             ActiveRecord::EVENT_BEFORE_INSERT => 'beforeUpload',
             ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpload',
@@ -58,6 +59,25 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
             }
         } else {
             $this->createInstance($this->attributes);
+        }
+    }
+
+    public function afterValidate()
+    {
+        if (is_array($this->attributes) && count($this->attributes)) {
+            foreach ($this->attributes as $attribute) {
+                $this->revertAttribute($attribute);
+            }
+        } else {
+            $this->revertAttribute($this->attributes);
+        }
+    }
+
+    public function revertAttribute($attribute)
+    {
+        // Reverting old attribute value to show old image in preview when some error occurred on backend
+        if ($this->owner->hasErrors()) {
+            $this->owner->{$attribute} = isset($this->owner->oldAttributes[$attribute]) ? $this->owner->oldAttributes[$attribute] : null;
         }
     }
 
@@ -79,7 +99,8 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
 
     public function upload($attribute)
     {
-        if ($uploadImage = $this->owner->{$attribute}) {
+        $uploadImage = $this->owner->{$attribute};
+        if ($uploadImage instanceof UploadedFile) {
             if (!$this->owner->isNewRecord) {
                 $this->delete($attribute);
             }
