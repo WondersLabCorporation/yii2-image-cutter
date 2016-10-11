@@ -5,16 +5,15 @@ $.fn.cutter = function (options) {
 
     var $uploadField = $(this);
 
-    var $inputField = options['inputField'];
     var $cropperOptions = options['cropperOptions'];
     var $useWindowHeight = options['useWindowHeight'];
 
-    var $cutter = $('#' + $inputField + '-cutter');
+    var $cutter = $(this).parents('.image-cutter');
+
     var $modal = $cutter.find('.modal');
     var $imageContainer = $cutter.find('.image-container');
-    var $imageID = $imageContainer.find('img').attr('id');
     var $preview = $cutter.find('.preview-image');
-    var $cropperData = $cutter.find('#' + $imageID + '-cropping-data');
+    var $cropperData = $cutter.find('.cropping-data');
 
     var $initialImageSrc = $preview.prop('src');
 
@@ -32,8 +31,8 @@ $.fn.cutter = function (options) {
         reader.readAsDataURL(file);
     });
 
-    $('#' + $imageID + '_button_accept').on('click', function () {
-        var data = $('#' + $imageID).cropper('getData');
+    $cutter.on('click', '.button_accept', function () {
+        var data = $imageContainer.find('img.cropped-image').cropper('getData');
 
         $.each(data, function () {
             if (this != 0) {
@@ -42,7 +41,7 @@ $.fn.cutter = function (options) {
         });
 
         if ($cropped) {
-            var canvas = $('#' + $imageID).cropper('getCroppedCanvas');
+            var canvas = $imageContainer.find('img.cropped-image').cropper('getCroppedCanvas');
             var dataURL = canvas.toDataURL();
 
             $preview.prop('src', dataURL);
@@ -51,7 +50,7 @@ $.fn.cutter = function (options) {
         $modal.modal('hide');
     });
 
-    $('#' + $imageID + '_button_cancel').on('click', function () {
+    $cutter.on('click', '.button_cancel', function () {
         $modal.modal('hide');
     });
 
@@ -60,20 +59,20 @@ $.fn.cutter = function (options) {
             // On cancelling or failed cropping need to reset fileInput and preview value.
             $preview.prop('src', $initialImageSrc);
             // Due to browser restrictions fileInput value can be set to empty string only
-            $('#' + $inputField).replaceWith($('#' + $inputField).val('').clone(true));
+            $uploadField.replaceWith($uploadField.val('').clone(true));
         }
 
         $cropped = false;
 
-        $('#' + $imageID).removeAttr("src").removeAttr("style");
+        $imageContainer.find('img.cropped-image').removeAttr("src").removeAttr("style");
     });
 
     function fileOnload(e) {
-        var imageField = $imageContainer.find('img').prop('outerHTML');
+        var imageField = $imageContainer.find('img.cropped-image').prop('outerHTML');
 
         $imageContainer.html('').append(imageField);
 
-        $('#' + $imageID).prop('src', e.target.result.toString()).hide();
+        $imageContainer.find('img.cropped-image').prop('src', e.target.result.toString()).hide();
 
         $modal.on('shown.bs.modal', function (a) {
             var size = getImageContainerSize();
@@ -95,7 +94,8 @@ $.fn.cutter = function (options) {
                 }
             });
 
-            $('#' + $imageID).cropper(options);
+            $imageContainer.find('img.cropped-image').cropper('destroy');
+            $imageContainer.find('img.cropped-image').cropper(options);
         });
 
         $modal.modal('show');
@@ -106,8 +106,8 @@ $.fn.cutter = function (options) {
         var width = $imageContainer.width();
         var minHeight = 100;
 
-        var imageWidth = $('#' + $imageID).width();
-        var imageHeight = $('#' + $imageID).height();
+        var imageWidth = $imageContainer.find('img.cropped-image').width();
+        var imageHeight = $imageContainer.find('img.cropped-image').height();
 
         if (imageWidth > imageHeight) {
             var aspectRatio = imageWidth / width;
@@ -148,10 +148,10 @@ $.fn.cutter = function (options) {
 
         var $modal = $(this).closest('.modal');
         var $imageContainer = $modal.find('.image-container');
-        var $imageID = $imageContainer.find('img').attr('id');
+        var $image = $imageContainer.find('img.cropped-image');
 
         if (method) {
-            $('#' + $imageID).cropper(method, option);
+            $image.cropper(method, option);
 
         }
 
