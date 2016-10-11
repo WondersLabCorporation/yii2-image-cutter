@@ -36,7 +36,7 @@ class Cutter extends \yii\widgets\InputWidget
      * @var bool
      */
     public $useWindowHeight = true;
-    
+
     /**
      * Whether to show remove button or not
      * @var bool
@@ -92,6 +92,7 @@ class Cutter extends \yii\widgets\InputWidget
             'options' => $this->options,
             'model' => $this->model,
             'attribute' => $this->attribute,
+            'value' => Html::getAttributeValue($this->model, $this->attribute),
             'showRemoveButton' => $this->showRemoveButton,
             'cropperButtons' => $this->getCropperButtons(),
         ]);
