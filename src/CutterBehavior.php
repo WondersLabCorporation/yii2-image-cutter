@@ -40,6 +40,8 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
      */
     public $quality = 92;
 
+    public $index = null;
+
     public function events()
     {
         return [
@@ -83,7 +85,11 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
 
     public function createInstance($attribute)
     {
-        $this->owner->{$attribute} = UploadedFile::getInstance($this->owner, $attribute);
+        $imageInstance = $attribute;
+        if ($this->index !== null) {
+            $imageInstance = '[' . $this->index . ']' . $attribute;
+        }
+        $this->owner->{$attribute} = UploadedFile::getInstance($this->owner, $imageInstance);
     }
 
     public function beforeUpload()
@@ -112,7 +118,10 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
                 'dataHeight' => null,
             ];
             $ownerPost = Yii::$app->request->post($this->owner->formName());
-            $jsonCroppingData = isset($ownerPost[$attribute . '-cropping-data']) ? $ownerPost[$attribute . '-cropping-data'] : $defaults;
+            if ($this->index !== null) {
+                $ownerPost = isset($ownerPost[$this->index]) ? $ownerPost[$this->index] : $ownerPost;
+            }
+            $jsonCroppingData = isset($ownerPost[$attribute . 'CroppingData']) ? $ownerPost[$attribute . 'CroppingData'] : $defaults;
             $cropping = Json::decode($jsonCroppingData);
 
             $croppingFileName = md5($uploadImage->name . $this->quality . $jsonCroppingData);

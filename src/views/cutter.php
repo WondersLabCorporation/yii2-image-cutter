@@ -28,7 +28,7 @@ $this->registerJs('jQuery("#' . $inputField . '").cutter(' . Json::encode([
 ?>
 <div class="image-cutter">
     <?= Html::activeFileInput($model, $attribute, ['data-cutter-field' => $inputField]); ?>
-    <?= Html::hiddenInput($model->formName() . Html::getInputName($model, $attribute . 'CroppingData'), '{}', ['class' => 'cropping-data']); ?>
+    <?= Html::hiddenInput(Html::getInputName($model, $attribute . 'CroppingData'), '{}', ['class' => 'cropping-data']); ?>
     <label class="dropzone" for="<?= $inputField ?>">
         <span class="img-container">
             <span><?= Yii::t('WondersLabCorporation/cutter', 'Click to upload image'); ?></span>
