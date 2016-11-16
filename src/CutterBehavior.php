@@ -40,6 +40,12 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
      */
     public $quality = 92;
 
+    /**
+     * Whether to use transparent background for new image or not. Defaults to true
+     * @var
+     */
+    public $transparentBackground = true;
+
     public function events()
     {
         return [
@@ -136,7 +142,12 @@ class CutterBehavior extends \yii\behaviors\AttributeBehavior
             $imageTmp = Image::getImagine()->open($uploadImage->tempName);
             $imageTmp->rotate($cropping['dataRotate']);
 
-            $image = Image::getImagine()->create($imageTmp->getSize());
+            if (Image::getImagine() instanceof Imagine && $this->transparentBackground) {
+                // Hotfix for Imagine with transparent background
+                $image = Image::getImagine()->create($imageTmp->getSize(), new RGB(new \Imagine\Image\Palette\RGB(), [0, 0, 0], 0));
+            } else {
+                $image = Image::getImagine()->create($imageTmp->getSize());
+            }
             $image->paste($imageTmp, new Point(0, 0));
 
             $point = new Point($cropping['dataX'], $cropping['dataY']);
