@@ -2,6 +2,8 @@
 
 namespace WondersLabCorporation\cutter;
 
+use Imagine\Image\Palette\Color\RGB;
+use Imagine\Imagick\Imagine;
 use Yii;
 use yii\helpers\Json;
 use yii\imagine\Image;
